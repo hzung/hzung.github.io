@@ -1,9 +1,73 @@
-<!DOCTYPE html>
 <html>
-<head>
-  <title>Test Ahihi Ahihi</title>
-</head>
-<body>
+  <head>
+    <link rel="stylesheet" href="lib/flipclock/flipclock.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <title>HungTUT.com</title>
+    <script src="lib/flipclock/flipclock.js"></script>
+    <link rel="apple-touch-icon" sizes="57x57" href="apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
 
-</body>
+    <style type="text/css">
+      @import url('https://fonts.googleapis.com/css?family=Staatliches');
+      html, body, .container {
+        width: 100%;
+        height: 100%;
+      }
+      body {
+        background-image: url("img/background.png");
+      }
+      .container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .clock-item {
+        display: inline-block;
+        width: auto;
+      }
+      .flip-clock-label {
+        color: #cccccc !important;
+        font-family: 'Staatliches', cursive !important;
+        font-size: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="clock clock-item" style="margin:2em;"></div>
+    </div>
+    
+    <script type="text/javascript">
+    var clock;
+    $(document).ready(function() {
+    // Grab the current date
+    var currentDate = new Date();
+    // Set some date in the future. In this case, it's always Jan 1
+    var futureDate  = new Date(2019, 1, 5);
+    // Calculate the difference in seconds between the future and current date
+    var diff = futureDate.getTime() / 1000 - currentDate.getTime() / 1000;
+    // Instantiate a coutdown FlipClock
+    clock = $('.clock').FlipClock(diff, {
+        clockFace: 'DailyCounter',
+        countdown: true
+      });
+    });
+    </script>
+    
+  </body>
 </html>
