@@ -80,7 +80,11 @@
                 },
                 computed: {
                     filterTerms: function () {
-                        return this.searchText != "" ? this.fuse.search(this.searchText).map(item => item.item) : this.terms;
+                        function randomInteger(min, max) {
+                          return Math.floor(Math.random() * (max - min + 1)) + min;
+                        }
+                        var randomIndex = randomInteger(0, this.terms.length - 1);
+                        return this.searchText != "" ? this.fuse.search(this.searchText).map(item => item.item).slice(0, 10) : [this.terms[randomIndex]];
                     }
                 },
                 created() {
