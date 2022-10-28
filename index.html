@@ -6,7 +6,7 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style>
             #app {
                 display: flex;
@@ -34,12 +34,14 @@
         <div id="app">
             <div class="term">
                 <input type="text" v-model="searchText" class="text-search">
-                <table class="term-table">
-                    <tr v-for="term in filterTerms">
-                        <td><b>{{term.title}}</b></td>
-                        <td>{{term.content}}</td>
-                    </tr>
-                </table>
+                <div v-for="term in filterTerms">
+                    <h2>
+                        {{term.title}}
+                    </h2>
+                    <p>
+                        {{term.content}}
+                    </p>
+                </div>
             </div>
         </div>
         <script>
