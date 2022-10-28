@@ -1,0 +1,2 @@
+https://docs.google.com/spreadsheets/d/1nGnC3swMxl0n-nkkqHKxfnp4zDMlTAylVYvq5D8tRzA/edit#gid=0
+https://sheets.googleapis.com/v4/spreadsheets/1nGnC3swMxl0n-nkkqHKxfnp4zDMlTAylVYvq5D8tRzA/values/Terms!A:B
