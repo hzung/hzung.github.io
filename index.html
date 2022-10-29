@@ -11,30 +11,22 @@
         <style>
             #app {
                 display: flex;
-                justify-content: center;
+                align-items: center;
                 font-family: 'Roboto', sans-serif;
                 font-size: 20px;
+                flex-direction: column;
             }
             
             .term {
-                width: 800px;
-                padding-top: 60px;
+                width: 500px;
+                margin:  10px;
             }
 
             .search-area {
-                left: 0;
-                right: 0;
-                top: 0px;
+                width:  100%;
                 height: 60px;
-
-                position: fixed;
-                background: white;
-                padding-left: 10px;
-                padding-right: 10px;
-                
                 display: flex;
                 align-items: center;
-                background: grey;
             }
 
             .text-search {
@@ -45,6 +37,10 @@
 
             .term-table {
                 font-size: 15pt;
+            }
+
+            table tr {
+                height: 30px;
             }
         </style>
     </head>
@@ -63,20 +59,43 @@
                     </p>
                 </div>
             </div>
+            <div class="term">
+                <div class="search-area">
+                    <input type="text" v-model="searchAticles" class="text-search">
+                </div>
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th @click="sortBy = 'replies'">Replies</th>
+                        <th @click="sortBy = 'views'">Views</th>
+                    </tr>
+                    <tr v-for="article in filterArticles">
+                        <td>
+                            <a :href="article.url">{{ article.name }}</a>
+                        </td>
+                        <td>
+                            {{ article.replies }}
+                        </td>
+                        <td>
+                            {{ article.views }}
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </div>
         <script>
             var googleSpreadSheetId = "1nGnC3swMxl0n-nkkqHKxfnp4zDMlTAylVYvq5D8tRzA";
             var apiKey = "AIzaSyD3_rrZTCSgt5vbqdKm5wJY6bl_rSI2R3w";
-            const options = {
-                includeScore: true,
-                keys: ['title', 'content']
-            }
             new Vue({
                 el: '#app',
                 data: {
                     terms: [],
+                    articles: [],
                     searchText: '',
-                    fuse: null
+                    searchAticles: '',
+                    fuseTerms: null,
+                    fuseArticles: null,
+                    sortBy: 'views'
                 },
                 computed: {
                     filterTerms: function () {
@@ -84,21 +103,45 @@
                           return Math.floor(Math.random() * (max - min + 1)) + min;
                         }
                         var randomIndex = randomInteger(0, this.terms.length - 1);
-                        return this.searchText != "" ? this.fuse.search(this.searchText).map(item => item.item).slice(0, 10) : [this.terms[randomIndex]];
-                    }
+                        return this.searchText != "" ? this.fuseTerms.search(this.searchText).map(item => item.item).slice(0, 3) : [this.terms[randomIndex]];
+                    },
+                    filterArticles: function () {
+                        var vm = this;
+                        function sortViews(a, b) {
+                            if ( a[vm.sortBy] < b[vm.sortBy] ){
+                                return 1;
+                              }
+                              if ( a[vm.sortBy] > b[vm.sortBy] ){
+                                return -1;
+                              }
+                              return 0;
+                        }
+                        return (this.searchAticles != "" ? this.fuseArticles.search(this.searchAticles).map(item => item.item).slice(0, 10) : this.articles).sort(sortViews);
+                    },
                 },
                 created() {
                     var vm = this;
                     var url = "https://sheets.googleapis.com/v4/spreadsheets/" + googleSpreadSheetId + "/values/Terms!A:B?alt=json&key=" + apiKey;
-                    axios.get(url).then(data => {
-                        vm.terms = data.data.values.map(item => {
+                    axios.get(url).then(response => {
+                        vm.terms = response.data.values.map(item => {
                             return {
                                 "title": item[0],
                                 "content": item[1]
                             }
                         });
                         vm.terms.shift();
-                        vm.fuse = new Fuse(vm.terms, options);
+                        vm.fuseTerms = new Fuse(vm.terms, {
+                            includeScore: true,
+                            keys: ['title', 'content']
+                        });
+                    })
+
+                    axios.get('https://raw.githubusercontent.com/hzung/hzung.github.io/main/Al-Trade-Setups.json').then(response => {
+                        vm.articles = response.data;
+                        vm.fuseArticles = new Fuse(vm.articles, {
+                            includeScore: true,
+                            keys: ['name']
+                        });
                     })
                 }
             })
