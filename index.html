@@ -75,11 +75,15 @@
                 </div>
                 <table>
                     <tr>
+                        <th>Topic</th>
                         <th>Name</th>
                         <th @click="sortBy = 'replies'">Replies</th>
                         <th @click="sortBy = 'views'">Views</th>
                     </tr>
                     <tr v-for="article in filterArticles">
+                        <td>
+                            <a :href="article.topicUrl">{{ article.topic }}</a>
+                        </td>
                         <td>
                             <a :href="article.url">{{ article.name }}</a>
                         </td>
@@ -126,7 +130,7 @@
                               }
                               return 0;
                         }
-                        return (this.searchAticles != "" ? this.fuseArticles.search(this.searchAticles).map(item => item.item).slice(0, 10) : this.articles).sort(sortViews);
+                        return (this.searchAticles != "" ? this.fuseArticles.search(this.searchAticles).map(item => item.item) : this.articles).sort(sortViews).slice(0, 300);
                     },
                 },
                 created() {
@@ -150,7 +154,7 @@
                         vm.articles = response.data;
                         vm.fuseArticles = new Fuse(vm.articles, {
                             includeScore: true,
-                            keys: ['name']
+                            keys: ['name', 'topic']
                         });
                     })
                 }
