@@ -56,6 +56,12 @@
             .filter-checkbox {
                 margin-right: 15px;
             }
+
+            .today-quote {
+                border: 1px dashed black;
+                padding: 20px;
+                max-width: 800px;
+            }
         </style>
     </head>
     <body>
@@ -72,6 +78,10 @@
                         {{term.content}}
                     </p>
                 </div>
+            </div>
+            <div class="today-quote" v-if="quote != null">
+                <p v-html="quote.content"></p>
+                <a :href="quote.link" style="float: right;" target="_blank">Reference</a>
             </div>
             <div class="term">
                 <div class="search-area">
@@ -109,6 +119,8 @@
                 el: '#app',
                 data: {
                     terms: [],
+                    quotes: [],
+                    quote: null,
                     articles: [],
                     topics: {},
                     searchText: '',
@@ -119,10 +131,7 @@
                 },
                 computed: {
                     filterTerms: function () {
-                        function randomInteger(min, max) {
-                          return Math.floor(Math.random() * (max - min + 1)) + min;
-                        }
-                        var randomIndex = randomInteger(0, this.terms.length - 1);
+                        var randomIndex = this.randomInteger(0, this.terms.length - 1);
                         return this.searchText != "" ? this.fuseTerms.search(this.searchText).map(item => item.item).slice(0, 3) : [this.terms[randomIndex]];
                     },
                     filterArticles: function () {
@@ -146,24 +155,47 @@
                         return Object.keys(this.topics);
                     }
                 },
-                methods: {},
+                methods: {
+                    randomInteger(min, max) {
+                        return Math.floor(Math.random() * (max - min + 1)) + min;
+                    },
+                    fetchAbbr() {
+                        var vm = this;
+                        var url = "https://sheets.googleapis.com/v4/spreadsheets/" + googleSpreadSheetId + "/values/Terms!A:B?alt=json&key=" + apiKey;
+                        axios.get(url).then(response => {
+                            vm.terms = response.data.values.map(item => {
+                                return {
+                                    "title": item[0],
+                                    "content": item[1]
+                                }
+                            });
+                            vm.terms.shift();
+                            vm.fuseTerms = new Fuse(vm.terms, {
+                                includeScore: true,
+                                keys: ['title', 'content']
+                            });
+                        })
+                    },
+                    fetchQuotes() {
+                        var vm = this;
+                        var url = "https://sheets.googleapis.com/v4/spreadsheets/" + googleSpreadSheetId + "/values/Quotes!A:B?alt=json&key=" + apiKey;
+                        axios.get(url).then(response => {
+                            vm.quotes = response.data.values.map(item => {
+                                return {
+                                    "content": item[0],
+                                    "link": item[1]
+                                }
+                            });
+                            vm.quotes.shift();
+                            var randomIndex = vm.randomInteger(0, vm.quotes.length - 1);
+                            vm.quote = vm.quotes[randomIndex];
+                        })
+                    }
+                },
                 created() {
                     var vm = this;
-                    var url = "https://sheets.googleapis.com/v4/spreadsheets/" + googleSpreadSheetId + "/values/Terms!A:B?alt=json&key=" + apiKey;
-                    axios.get(url).then(response => {
-                        vm.terms = response.data.values.map(item => {
-                            return {
-                                "title": item[0],
-                                "content": item[1]
-                            }
-                        });
-                        vm.terms.shift();
-                        vm.fuseTerms = new Fuse(vm.terms, {
-                            includeScore: true,
-                            keys: ['title', 'content']
-                        });
-                    })
-
+                    vm.fetchAbbr();
+                    vm.fetchQuotes();
                     axios.get('https://raw.githubusercontent.com/hzung/hzung.github.io/main/Al-Trade-Setups.json').then(response => {
                         vm.articles = response.data;
                         var topics = {};
