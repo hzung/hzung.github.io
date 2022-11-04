@@ -41,6 +41,11 @@ new Vue({
         }
     },
     methods: {
+        onClickNext() {
+            var vm = this;
+            var randomIndex = vm.randomInteger(0, vm.quotes.length - 1);
+            vm.quote = vm.quotes[randomIndex];
+        },
         randomInteger(min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
         },
