@@ -8,7 +8,7 @@ new Vue({
         quote: null,
         articles: [],
         articlesObj: {},
-        favorites: {},
+        isFilterFavoriteOnly: false,
         topics: {},
         searchText: '',
         searchAticles: '',
@@ -32,14 +32,21 @@ new Vue({
                     }
                     return 0;
             }
-            var results = (this.searchAticles != "" ? this.fuseArticles.search(this.searchAticles).map(item => item.item) : this.articles).sort(sortViews).slice(0, 500);
-            results = results.filter(article => {
-                return article.topic in vm.topics && vm.topics[article.topic].checked;
-            });
-            return results;
+            if (vm.isFilterFavoriteOnly) {
+                return vm.favoriteArticles;
+            } else {
+                var results = (this.searchAticles != "" ? this.fuseArticles.search(this.searchAticles).map(item => item.item) : this.articles).sort(sortViews).slice(0, 500);
+                results = results.filter(article => {
+                    return article.topic in vm.topics && vm.topics[article.topic].checked;
+                });
+                return results;
+            }
         },
         topicsArr: function() {
             return Object.keys(this.topics);
+        },
+        favoriteArticles() {
+            return this.articles.filter(article => article.isFavorite);
         }
     },
     methods: {

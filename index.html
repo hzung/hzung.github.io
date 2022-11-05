@@ -35,9 +35,14 @@
                     <input type="text" v-model="searchAticles" class="text-search">
                 </div>
                 <div class="filter">
-                    <span class="filter-checkbox" v-for="topic in topicsArr">
-                        <label><input type="checkbox" v-model="topics[topic].checked">{{topic}} ({{topics[topic].amount}})</label>
-                    </span>
+                    <div>
+                        <span class="filter-checkbox" v-for="topic in topicsArr">
+                            <label><input type="checkbox" v-model="topics[topic].checked">{{topic}} ({{topics[topic].amount}})</label>
+                        </span>
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <label><input type="checkbox" v-model="isFilterFavoriteOnly">Favorite only ({{favoriteArticles.length}})</label>
+                    </div>
                 </div>
                 <table>
                     <tr>
