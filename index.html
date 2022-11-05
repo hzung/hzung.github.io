@@ -6,6 +6,7 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Trading Notes</title>
         <link rel="stylesheet" href="/style.css">
@@ -46,9 +47,17 @@
                 </div>
                 <table cellspacing="0" cellpadding="0">
                     <tr>
-                        <th>Name</th>
-                        <th @click="sortBy = 'replies'">Replies</th>
-                        <th @click="sortBy = 'views'">Views</th>
+                        <th style="width:70%">Name</th>
+                        <th @click="sortBy = 'replies'">
+                            <span class="material-symbols-outlined">
+                            chat
+                            </span>
+                        </th>
+                        <th @click="sortBy = 'views'">
+                            <span class="material-symbols-outlined">
+                            visibility
+                            </span>
+                        </th>
                         <th><img class="favorite-icon" src="/favorite_on.png" alt=""></th>
                     </tr>
                     <tr v-for="(index, article) in filterArticles" class="white-bg">

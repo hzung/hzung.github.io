@@ -82,6 +82,13 @@ new Vue({
                 });
             })
         },
+        randomQuoteAuto(){ 
+            var vm = this;
+            setInterval(() => {
+                var randomIndex = vm.randomInteger(0, vm.quotes.length - 1);
+                vm.quote = vm.quotes[randomIndex];
+            }, 10000);
+        },
         fetchQuotes() {
             var vm = this;
             var url = "https://sheets.googleapis.com/v4/spreadsheets/" + googleSpreadSheetId + "/values/Quotes!A:B?alt=json&key=" + decodedApiKey;
@@ -95,6 +102,7 @@ new Vue({
                 vm.quotes.shift();
                 var randomIndex = vm.randomInteger(0, vm.quotes.length - 1);
                 vm.quote = vm.quotes[randomIndex];
+                vm.randomQuoteAuto();
             })
         },
         toggleFavorite(article) {

@@ -48,6 +48,8 @@ table tr {
     height: 40px;
 }
 
+table td, table th { overflow-wrap: anywhere; }
+
 .filter-checkbox {
     margin-right: 15px;
 }
@@ -56,6 +58,7 @@ table tr {
     border: 1px dashed black;
     padding: 20px;
     max-width: 1200px;
+    border-radius: 10px;
 }
 
 .favorite-icon {
