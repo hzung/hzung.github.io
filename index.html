@@ -51,9 +51,9 @@
                         <th @click="sortBy = 'views'">Views</th>
                         <th><img class="favorite-icon" src="/favorite_on.png" alt=""></th>
                     </tr>
-                    <tr v-for="article in filterArticles">
+                    <tr v-for="(index, article) in filterArticles">
                         <td>
-                            [<a :href="article.topicUrl">{{ article.shortTopic }}</a>] - <a :href="article.url">{{ article.name }}</a>
+                            [<a :href="article.topicUrl">{{index + 1}}. {{ article.shortTopic }}</a>] - <a :href="article.url">{{ article.name }}</a>
                         </td>
                         <td>
                             {{ article.replies }}

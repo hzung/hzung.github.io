@@ -35,10 +35,11 @@ new Vue({
             if (vm.isFilterFavoriteOnly) {
                 return vm.favoriteArticles;
             } else {
-                var results = (this.searchAticles != "" ? this.fuseArticles.search(this.searchAticles).map(item => item.item) : this.articles).sort(sortViews).slice(0, 500);
+                var results = (this.searchAticles != "" ? this.fuseArticles.search(this.searchAticles).map(item => item.item) : this.articles).sort(sortViews);
                 results = results.filter(article => {
-                    return article.topic in vm.topics && vm.topics[article.topic].checked;
+                    return article.topic in vm.topics && vm.topics[article.topic].checked && article.replies > 0;
                 });
+                results = results.slice(0, 500);
                 return results;
             }
         },
@@ -127,13 +128,15 @@ new Vue({
             vm.getFavoriteArticles((favoriteObj) => {
                 var topics = {};
                 articlesResponse.forEach(article => {
-                    if (!(article.topic in topics)) {
-                        topics[article.topic] = {
-                            amount: 1,
-                            checked: article.topic == "Al's Trade Setups" ? true : false
+                    if (article.replies > 0) {
+                        if (!(article.topic in topics)) {
+                            topics[article.topic] = {
+                                amount: 1,
+                                checked: article.topic == "Al's Trade Setups" ? true : false
+                            }
+                        } else {
+                            topics[article.topic]['amount'] += 1;
                         }
-                    } else {
-                        topics[article.topic]['amount'] += 1;
                     }
                 });
                 vm.topics = topics;
