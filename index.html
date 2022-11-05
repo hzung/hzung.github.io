@@ -27,9 +27,11 @@
                 </div>
             </div>
             <div class="today-quote" v-if="quote != null">
-                <a v-if="quote.link.length == 0" :href="quote.link" style="float: right;" target="_blank">Reference</a>
-                <span style="float: left; cursor: pointer; user-select: none;" @click="onClickNext()"><u>Next</u></span>
-                <p style="margin-top: 40px;" v-html="quote.content"></p>
+                <div class="quote-content">
+                    <a v-if="quote.link.length == 0" :href="quote.link" style="float: right;" target="_blank">Reference</a>
+                    <span style="float: left; cursor: pointer; user-select: none;" @click="onClickNext()"><u>Next</u></span>
+                    <p style="margin-top: 40px;" v-html="quote.content"></p>
+                </div>
             </div>
             <div class="term">
                 <div class="search-area">

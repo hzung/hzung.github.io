@@ -56,9 +56,12 @@ table td, table th { overflow-wrap: anywhere; }
 
 .today-quote {
     border: 1px dashed black;
-    padding: 20px;
-    max-width: 1200px;
+    width: 100%;
     border-radius: 10px;
+}
+
+.today-quote .quote-content {
+    padding: 10px;
 }
 
 .favorite-icon {
