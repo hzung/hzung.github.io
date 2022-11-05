@@ -53,7 +53,7 @@
                     </tr>
                     <tr v-for="(index, article) in filterArticles" class="white-bg">
                         <td>
-                            [<a :href="article.topicUrl">{{index + 1}}. {{ article.shortTopic }}</a>] - <a :href="article.url">{{ article.name }}</a>
+                            [<a :href="article.topicUrl" target="_blank">{{index + 1}}. {{ article.shortTopic }}</a>] - <a :href="article.url" target="_blank">{{ article.name }}</a>
                         </td>
                         <td>
                             {{ article.replies }}
