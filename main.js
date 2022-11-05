@@ -1,5 +1,11 @@
 var googleSpreadSheetId = "1nGnC3swMxl0n-nkkqHKxfnp4zDMlTAylVYvq5D8tRzA";
-var apiKey = "AIzaSyCx6iO0ZK-m6k2MvTjy1iqbwlhmOwOhjyc";
+var apiKey = "jlnao90dP1GasdnYxlWM5pGV21kMrZTbtskWw8Ua2g3Q5NVY6lUQ";
+
+function reverse(s){
+    return s.split("").reverse().join("");
+}
+var decodedApiKey = atob(reverse(apiKey));
+
 new Vue({
     el: '#app',
     data: {
@@ -61,7 +67,7 @@ new Vue({
         },
         fetchAbbr() {
             var vm = this;
-            var url = "https://sheets.googleapis.com/v4/spreadsheets/" + googleSpreadSheetId + "/values/Terms!A:B?alt=json&key=" + apiKey;
+            var url = "https://sheets.googleapis.com/v4/spreadsheets/" + googleSpreadSheetId + "/values/Terms!A:B?alt=json&key=" + decodedApiKey;
             axios.get(url).then(response => {
                 vm.terms = response.data.values.map(item => {
                     return {
@@ -78,7 +84,7 @@ new Vue({
         },
         fetchQuotes() {
             var vm = this;
-            var url = "https://sheets.googleapis.com/v4/spreadsheets/" + googleSpreadSheetId + "/values/Quotes!A:B?alt=json&key=" + apiKey;
+            var url = "https://sheets.googleapis.com/v4/spreadsheets/" + googleSpreadSheetId + "/values/Quotes!A:B?alt=json&key=" + decodedApiKey;
             axios.get(url).then(response => {
                 vm.quotes = response.data.values.map(item => {
                     return {
@@ -103,7 +109,7 @@ new Vue({
             })
         },
         getFavoriteArticles(callback) {
-            var url = "https://sheets.googleapis.com/v4/spreadsheets/" + googleSpreadSheetId + "/values/Favorites!A:A?alt=json&key=" + apiKey;
+            var url = "https://sheets.googleapis.com/v4/spreadsheets/" + googleSpreadSheetId + "/values/Favorites!A:A?alt=json&key=" + decodedApiKey;
             axios.get(url).then(response => {
                 if (typeof(response.data.values) == 'undefined') {
                     callback({});
