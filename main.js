@@ -91,13 +91,14 @@ new Vue({
             })
         },
         toggleFavorite(article) {
-            article.isFavorite = !article.isFavorite;
+            article.isLoadingFavorite = true;
             var url = "https://script.google.com/macros/s/AKfycbx_GoH0KMnQyDj5gXOJZxdoFThht3Sy5LYap6N1LiB2L7nzVnFeixdbDGO0m5V_FKfY/exec";
             var formdata = new FormData();
             formdata.append("link", article.url);
             formdata.append("sheet", "Favorites");
             axios.post(url, formdata).then(response => {
-                console.log(response);
+                article.isLoadingFavorite = false;
+                article.isFavorite = !article.isFavorite;
             })
         },
         getFavoriteArticles(callback) {
@@ -142,6 +143,7 @@ new Vue({
                 vm.articles = articlesResponse.map(article => {
                     article.shortTopic = article.topic.split(' ').map(item => (item[0] + "").toUpperCase()).join('');
                     article.isFavorite = article.url in favoriteObj;
+                    article.isLoadingFavorite = false;
                     return article;
                 });
             });

@@ -62,7 +62,10 @@
                             {{ article.views }}
                         </td>
                         <td>
-                            <span class="cursor-pointer" @click="toggleFavorite(article)">
+                            <div v-if="article.isLoadingFavorite" class="loader">
+
+                            </div>
+                            <span class="cursor-pointer" @click="toggleFavorite(article)" v-if="!article.isLoadingFavorite">
                                 <img v-if="!article.isFavorite" class="favorite-icon" src="/favorite_off.png" alt="">
                                 <img v-if="article.isFavorite" class="favorite-icon" src="/favorite_on.png" alt="">
                             </span>
