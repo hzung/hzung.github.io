@@ -44,6 +44,7 @@
                         <th>Name</th>
                         <th @click="sortBy = 'replies'">Replies</th>
                         <th @click="sortBy = 'views'">Views</th>
+                        <th><img class="favorite-icon" src="/favorite_on.png" alt=""></th>
                     </tr>
                     <tr v-for="article in filterArticles">
                         <td>
@@ -54,6 +55,12 @@
                         </td>
                         <td>
                             {{ article.views }}
+                        </td>
+                        <td>
+                            <span class="cursor-pointer" @click="toggleFavorite(article)">
+                                <img v-if="!article.isFavorite" class="favorite-icon" src="/favorite_off.png" alt="">
+                                <img v-if="article.isFavorite" class="favorite-icon" src="/favorite_on.png" alt="">
+                            </span>
                         </td>
                     </tr>
                 </table>

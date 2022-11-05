@@ -7,6 +7,8 @@ new Vue({
         quotes: [],
         quote: null,
         articles: [],
+        articlesObj: {},
+        favorites: {},
         topics: {},
         searchText: '',
         searchAticles: '',
@@ -80,6 +82,31 @@ new Vue({
                 var randomIndex = vm.randomInteger(0, vm.quotes.length - 1);
                 vm.quote = vm.quotes[randomIndex];
             })
+        },
+        toggleFavorite(article) {
+            article.isFavorite = !article.isFavorite;
+            var url = "https://script.google.com/macros/s/AKfycbx_GoH0KMnQyDj5gXOJZxdoFThht3Sy5LYap6N1LiB2L7nzVnFeixdbDGO0m5V_FKfY/exec";
+            var formdata = new FormData();
+            formdata.append("link", article.url);
+            formdata.append("sheet", "Favorites");
+            axios.post(url, formdata).then(response => {
+                console.log(response);
+            })
+        },
+        getFavoriteArticles(callback) {
+            var url = "https://sheets.googleapis.com/v4/spreadsheets/" + googleSpreadSheetId + "/values/Favorites!A:A?alt=json&key=" + apiKey;
+            axios.get(url).then(response => {
+                if (typeof(response.data.values) == 'undefined') {
+                    callback({});
+                } else {
+                    var favoriteUrls = response.data.values.map(item => item[0]);
+                    var favoriteObj = {};
+                    favoriteUrls.forEach(item => {
+                        favoriteObj[item] = true;
+                    });
+                    callback(favoriteObj);
+                }
+            })
         }
     },
     created() {
@@ -87,26 +114,29 @@ new Vue({
         vm.fetchAbbr();
         vm.fetchQuotes();
         axios.get('https://raw.githubusercontent.com/hzung/hzung.github.io/main/Al-Trade-Setups.json').then(response => {
-            vm.articles = response.data;
-            var topics = {};
-            vm.articles.forEach(article => {
-                if (!(article.topic in topics)) {
-                    topics[article.topic] = {
-                        amount: 1,
-                        checked: article.topic == "Al's Trade Setups" ? true : false
+            var articlesResponse = response.data;
+            // Get favorites
+            vm.getFavoriteArticles((favoriteObj) => {
+                var topics = {};
+                articlesResponse.forEach(article => {
+                    if (!(article.topic in topics)) {
+                        topics[article.topic] = {
+                            amount: 1,
+                            checked: article.topic == "Al's Trade Setups" ? true : false
+                        }
+                    } else {
+                        topics[article.topic]['amount'] += 1;
                     }
-                } else {
-                    topics[article.topic]['amount'] += 1;
-                }
-            });
-            vm.topics = topics;
-            vm.articles = vm.articles.map(article => {
-                article.shortTopic = article.topic.split(' ').map(item => (item[0] + "").toUpperCase()).join('');
-                return article;
-            });
-            vm.fuseArticles = new Fuse(vm.articles, {
-                includeScore: true,
-                keys: ['name', 'topic']
+                });
+                vm.topics = topics;
+                articlesResponse.forEach(article => {
+                    vm.articlesObj[article.url] = article;
+                });
+                vm.articles = articlesResponse.map(article => {
+                    article.shortTopic = article.topic.split(' ').map(item => (item[0] + "").toUpperCase()).join('');
+                    article.isFavorite = article.url in favoriteObj;
+                    return article;
+                });
             });
         })
     }
