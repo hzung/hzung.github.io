@@ -41,10 +41,10 @@ new Vue({
             if (vm.isFilterFavoriteOnly) {
                 return vm.favoriteArticles;
             } else {
-                var results = (this.searchAticles != "" ? this.fuseArticles.search(this.searchAticles).map(item => item.item) : this.articles).sort(sortViews);
-                results = results.filter(article => {
+                var results = this.articles.filter(article => {
                     return article.topic in vm.topics && vm.topics[article.topic].checked && article.replies > 0;
                 });
+                results = this.searchAticles != "" ? this.fuseArticles.search(this.searchAticles).map(item => item.item) : results.sort(sortViews);
                 results = results.slice(0, 500);
                 return results;
             }
@@ -154,6 +154,10 @@ new Vue({
                     article.isFavorite = article.url in favoriteObj;
                     article.isLoadingFavorite = false;
                     return article;
+                });
+                vm.fuseArticles = new Fuse(vm.articles, {
+                    includeScore: true,
+                    keys: ['name']
                 });
             });
         })
