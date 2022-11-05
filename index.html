@@ -44,14 +44,14 @@
                         <label><input type="checkbox" v-model="isFilterFavoriteOnly">Favorite only <span v-if="favoriteArticles.length > 0">({{favoriteArticles.length}})</span></label>
                     </div>
                 </div>
-                <table>
+                <table cellspacing="0" cellpadding="0">
                     <tr>
                         <th>Name</th>
                         <th @click="sortBy = 'replies'">Replies</th>
                         <th @click="sortBy = 'views'">Views</th>
                         <th><img class="favorite-icon" src="/favorite_on.png" alt=""></th>
                     </tr>
-                    <tr v-for="(index, article) in filterArticles">
+                    <tr v-for="(index, article) in filterArticles" class="white-bg">
                         <td>
                             [<a :href="article.topicUrl">{{index + 1}}. {{ article.shortTopic }}</a>] - <a :href="article.url">{{ article.name }}</a>
                         </td>
