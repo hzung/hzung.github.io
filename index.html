@@ -41,7 +41,7 @@
                         </span>
                     </div>
                     <div style="margin-top: 10px;">
-                        <label><input type="checkbox" v-model="isFilterFavoriteOnly">Favorite only ({{favoriteArticles.length}})</label>
+                        <label><input type="checkbox" v-model="isFilterFavoriteOnly">Favorite only <span v-if="favoriteArticles.length > 0">({{favoriteArticles.length}})</span></label>
                     </div>
                 </div>
                 <table>
