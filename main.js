@@ -61,6 +61,10 @@ new Vue({
         }
     },
     methods: {
+        onClickRead() {
+            var textContent = document.querySelector('#quoteContent p').textContent;
+            TTS(textContent);
+        },
         onClickNext() {
             var vm = this;
             vm.randomQuoteIndex = (vm.randomQuoteIndex + 1) % vm.quotes.length;
