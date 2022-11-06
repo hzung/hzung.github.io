@@ -14,6 +14,8 @@ new Vue({
         quotes: [],
         quote: null,
         randomQuoteIndex: 0,
+        randomQuoteAutoInterval: 0,
+        delayDuration: 5000,
         articles: [],
         articlesObj: {},
         isFilterFavoriteOnly: false,
@@ -63,6 +65,7 @@ new Vue({
             var vm = this;
             vm.randomQuoteIndex = (vm.randomQuoteIndex + 1) % vm.quotes.length;
             vm.quote = vm.quotes[vm.randomQuoteIndex];
+            vm.startRandomQuoteAuto();
         },
         randomInteger(min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -87,10 +90,15 @@ new Vue({
         randomQuoteAuto(){ 
             var vm = this;
             vm.randomQuoteIndex = vm.randomInteger(0, vm.quotes.length - 1);
-            setInterval(() => {
+            vm.startRandomQuoteAuto();
+        },
+        startRandomQuoteAuto() {
+            var vm = this;
+            clearInterval(vm.randomQuoteAutoInterval);
+            vm.randomQuoteAutoInterval = setInterval(() => {
                 vm.randomQuoteIndex = (vm.randomQuoteIndex + 1) % vm.quotes.length;
                 vm.quote = vm.quotes[vm.randomQuoteIndex];
-            }, 30000);
+            }, vm.delayDuration);
         },
         fetchQuotes() {
             var vm = this;
