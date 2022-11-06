@@ -87,7 +87,7 @@ new Vue({
             setInterval(() => {
                 var randomIndex = vm.randomInteger(0, vm.quotes.length - 1);
                 vm.quote = vm.quotes[randomIndex];
-            }, 10000);
+            }, 30000);
         },
         fetchQuotes() {
             var vm = this;
