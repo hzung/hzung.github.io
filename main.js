@@ -15,7 +15,7 @@ new Vue({
         quote: null,
         randomQuoteIndex: 0,
         randomQuoteAutoInterval: 0,
-        delayDuration: 5000,
+        delayDuration: 30000,
         articles: [],
         articlesObj: {},
         isFilterFavoriteOnly: false,
