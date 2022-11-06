@@ -6,12 +6,14 @@ function reverse(s){
 }
 var decodedApiKey = atob(reverse(apiKey));
 
+Vue.use(VueMarkdown);
 new Vue({
     el: '#app',
     data: {
         terms: [],
         quotes: [],
         quote: null,
+        randomQuoteIndex: 0,
         articles: [],
         articlesObj: {},
         isFilterFavoriteOnly: false,
@@ -59,8 +61,8 @@ new Vue({
     methods: {
         onClickNext() {
             var vm = this;
-            var randomIndex = vm.randomInteger(0, vm.quotes.length - 1);
-            vm.quote = vm.quotes[randomIndex];
+            vm.randomQuoteIndex = (vm.randomQuoteIndex + 1) % vm.quotes.length;
+            vm.quote = vm.quotes[vm.randomQuoteIndex];
         },
         randomInteger(min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -84,9 +86,10 @@ new Vue({
         },
         randomQuoteAuto(){ 
             var vm = this;
+            vm.randomQuoteIndex = vm.randomInteger(0, vm.quotes.length - 1);
             setInterval(() => {
-                var randomIndex = vm.randomInteger(0, vm.quotes.length - 1);
-                vm.quote = vm.quotes[randomIndex];
+                vm.randomQuoteIndex = (vm.randomQuoteIndex + 1) % vm.quotes.length;
+                vm.quote = vm.quotes[vm.randomQuoteIndex];
             }, 30000);
         },
         fetchQuotes() {

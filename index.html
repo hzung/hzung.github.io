@@ -2,6 +2,7 @@
     <head>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
         <script src="https://cdn.jsdelivr.net/vue/1.0.28/vue.min.js"></script>
+        <script src="/vue-markdown/dist/vue-markdown.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.js"></script>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,8 +30,8 @@
             <div class="today-quote" v-if="quote != null">
                 <div class="quote-content">
                     <a v-if="quote.link.length == 0" :href="quote.link" style="float: right;" target="_blank">Reference</a>
-                    <span style="float: left; cursor: pointer; user-select: none;" @click="onClickNext()"><u>Next</u></span>
-                    <p style="margin-top: 40px;" v-html="quote.content"></p>
+                    <span style="float: left; cursor: pointer; user-select: none;" @click="onClickNext"><u>Next</u></span>
+                    <vue-markdown v-bind:source="quote.content" style="margin-top: 40px;"></vue-markdown>
                 </div>
             </div>
             <div class="term">
