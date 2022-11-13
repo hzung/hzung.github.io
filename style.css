@@ -70,7 +70,7 @@ table td, table th { overflow-wrap: anywhere; }
 }
 
 .cursor-pointer {
-    cursor: pointer;
+    cursor: default;
 }
 
 .loader {

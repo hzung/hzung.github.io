@@ -31,8 +31,9 @@
             <div class="today-quote" v-if="quote != null">
                 <div class="quote-content">
                     <a v-if="quote.link.length == 0" :href="quote.link" style="float: right;" target="_blank">Reference</a>
-                    <span style="float: left; cursor: pointer; user-select: none;" @click="onClickNext"><u>Next</u></span>
-                    <span style="float: right; cursor: pointer; user-select: none;" @click="onClickRead()"><u>Read</u></span>
+                    <span style="float: left; cursor: default; user-select: none; margin-right: 10px;" @click="onClickPrev"><u>Prev</u></span>
+                    <span style="float: left; cursor: default; user-select: none;" @click="onClickNext"><u>Next</u></span>
+                    <span style="float: right; cursor: default; user-select: none;" @click="onClickRead()"><u>Read</u></span>
                     <vue-markdown id="quoteContent" v-bind:source="quote.content" style="margin-top: 40px;"></vue-markdown>
                 </div>
             </div>
